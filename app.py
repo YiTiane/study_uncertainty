@@ -1,8 +1,14 @@
+import os
+import psycopg2
 from flask import Flask, render_template, jsonify, request
 import random
 import json
 
 app = Flask(__name__)
+
+# 设置数据库连接
+DATABASE_URL = os.environ['DATABASE_URL']
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 user_data = {} # 字典用于存储用户数据
 current_set = -5
@@ -72,15 +78,31 @@ def submit_selected_words():
 
     return jsonify({"status": "success", "words": selected_words})
 
+# @app.route('/save_data', methods=['POST'])
+# def save_data():
+#     data = request.json
+#     level = data.get('level')
+
+#     # 将 user_data 保存到 JSON 文件
+#     with open(f'user_data_{level}.json', 'w') as file:
+#         json.dump(user_data, file, indent=4)
+    
+#     print('save successful!')
+#     return jsonify({"status": "data_saved", "level": level})
+
 @app.route('/save_data', methods=['POST'])
 def save_data():
     data = request.json
     level = data.get('level')
 
-    # 将 user_data 保存到 JSON 文件
-    with open(f'user_data_{level}.json', 'w') as file:
-        json.dump(user_data, file, indent=4)
-    
+    # 将 user_data 转换为 JSON 字符串
+    user_data_json = json.dumps(user_data)
+
+    # 插入数据到 PostgreSQL 数据库
+    with conn.cursor() as cur:
+        cur.execute("INSERT INTO user_data (level, data) VALUES (%s, %s)", (level, user_data_json))
+        conn.commit()
+
     print('save successful!')
     return jsonify({"status": "data_saved", "level": level})
 

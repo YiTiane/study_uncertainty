@@ -42,3 +42,5 @@ urllib3==2.1.0
 Werkzeug==3.0.1
 yarg==0.1.9
 zipp==3.17.0
+psycopg2-binary
+dj-database-url
