@@ -6,9 +6,13 @@ import json
 
 app = Flask(__name__)
 
-# 设置数据库连接
+# heroku部署
 DATABASE_URL = os.environ['DATABASE_URL']
 conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+
+# 本地部署
+# DATABASE_URL = "postgresql://postgres:010128@localhost:5432/mydatabase"
+# conn = psycopg2.connect(DATABASE_URL)
 
 user_data = {} # 字典用于存储用户数据
 current_set = -5
@@ -93,14 +97,15 @@ def submit_selected_words():
 @app.route('/save_data', methods=['POST'])
 def save_data():
     data = request.json
+    user_Id = data.get('userId')
     level = data.get('level')
 
     # 将 user_data 转换为 JSON 字符串
-    user_data_json = json.dumps(user_data)
+    user_data_json = json.dumps(user_data, indent=4)
 
     # 插入数据到 PostgreSQL 数据库
     with conn.cursor() as cur:
-        cur.execute("INSERT INTO user_data (level, data) VALUES (%s, %s)", (level, user_data_json))
+        cur.execute("INSERT INTO user_data (user_ID, level, data) VALUES (%s, %s, %s)", (user_Id, level, user_data_json))
         conn.commit()
 
     print('save successful!')

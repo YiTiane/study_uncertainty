@@ -10,10 +10,9 @@
     <!-- 实验介绍指导 -->
     <div id="introSection" class="intro-section">
         <h2>User Study for AI-Assisted Decision Making</h2>
-        <p>Welcome to our Codenames AI-Assisted Experiment!</p>
-        <p>In this experiment, you will experience a unique version of the popular board game "Codenames," augmented with AI assistance. Our goal is to explore the role of AI in aiding human decision-making, especially in providing suggestions with different levels of uncertainties.</p>
-        <h3>Experiment Procedure</h3>
-        <p>In this special version of "Codenames," you will play solo with the system. The system acts as the Codemaster, providing clues comprising a word (clue) and a corresponding number of words associated with it. Your task is to guess the right words based on these clues, with the AI acting as a Suggestor.</p>
+        <p>Welcome to our AI-Assisted Decision Making Study!</p>
+        <p>In this study, you will play a simplified version of the popular board game "Codenames" with AI assistance. AI will give you suggestions with or without uncertainty to aid your decision making.</p>
+        <p>In this special version of "Codenames", you will play solo with the system. The system acts as the "Codemaster", providing clues comprising a word (clue) and a corresponding number of words associated with it. Your task is to select the most relevant words based on the clue, with the AI acting as a Suggester.</p>
         <p>Note: Do not refresh the page while the study is in progress!</p>
         <div class="image-container">
             <img src="../static/procedure.png" alt="Experiment Flowchart" class="centered-image">
@@ -86,7 +85,13 @@
     <!-- 过渡页面 1 -->
     <div id="transitionSection1" class="transition-section" style="display: none;">
         <h2>Get Ready for Warm-Up</h2>
-        <p>Great job on completing the rules quiz! You're now ready to proceed to the warm-up round. Use this round to familiarize yourself with the game and AI suggestions. Enter the code we provided to proceed to the next step. </p>
+        <p>Great job on completing the quiz! You're now ready to proceed to the warm-up round. Use this round to familiarize yourself with the game and AI's capability. Enter your prolific ID to get a code to proceed. </p>
+        
+        <div class="code-input-container">
+            <input type="text" id="idInput" class="code-input" placeholder="Enter Your ID">
+            <button id="generateCode" class="btn">Generate Code</button>
+        </div>
+        <p id="codeDisplay"></p>
         <div class="code-input-container">
             <input type="text" id="codeInput" class="code-input" placeholder="Enter Code">
             <button id="startWarmup" class="btn">Proceed to Warm-Up</button>
@@ -295,7 +300,7 @@
             </div>
         </div>
         <iframe id="qualtrics-survey1" src="https://nus.syd1.qualtrics.com/jfe/form/SV_eya68MSrw88PHSK"></iframe>
-        <button id="continueExperiment" class="btn">Continue</button>
+        <!-- <button id="continueExperiment" class="btn">Continue</button> -->
 
     </div>
     
@@ -376,6 +381,32 @@
                 }
             });
         });
+        
+        var userId;
+
+        document.getElementById('generateCode').addEventListener('click', function() {
+            userId = document.getElementById('idInput').value;
+            var codeDisplay = document.getElementById('codeDisplay');
+
+            if (userId.trim() === '') {
+                idInput.style.borderColor = 'red'; // Change border color to red
+            } else {
+                // 如果输入不为空，则生成代码
+                var generatedCode = generateCode();
+                codeDisplay.style.color = 'black'; // 重置文本颜色
+                codeDisplay.innerText = "Your Code is: " + generatedCode;
+            }
+        });
+
+        function generateCode() {
+            var codes = ['v7jw9', 'okd82', 'ps1fj', 'ds8hd', 'o39dp', 'duxn3'];
+            var currentTime = new Date().getTime(); // 获取当前时间的毫秒数
+            var randomFactor = Math.random() * currentTime; // 将时间与随机数结合
+
+            var randomIndex = Math.floor(randomFactor % codes.length); // 使用取模确保索引在数组范围内
+            var selectedCode = codes[randomIndex];
+            return selectedCode;
+        }
 
         let level; // This will hold the level based on the code
         let accuracy;
@@ -558,15 +589,18 @@
             });
 
             let timeTaken = mainSeconds;
-            // // Fetch the clue's word count
-            // let wordCountId = currentSet < 0 ? 'warmupwordCount' : 'wordCount';
-            // let requiredWordsCount = parseInt(document.getElementById(wordCountId).textContent, 10);
 
-            // // Check if the selected words match the required count
-            // if (selectedWords.length !== requiredWordsCount) {
-            //     alert(`Please select exactly ${requiredWordsCount} words as per the clue.`);
-            //     return; // Exit the function without submitting
-            // }
+            // Fetch the clue's word count
+            let wordCountId = currentSet < 0 ? 'warmupwordCount' : 'wordCount';
+            let requiredWordsCount = parseInt(document.getElementById(wordCountId).textContent, 10);
+
+            // Check if the selected words match the required count
+            console.log(selectedWords);
+            console.log(requiredWordsCount);
+            if (selectedWords.length !== requiredWordsCount) {
+                alert(`Please select exactly ${requiredWordsCount} words as per the clue.`);
+                return; // Exit the function without submitting
+            }
 
             // 发送选中的单词到后端
             fetch('/submit_selected_words', {
@@ -630,25 +664,29 @@
                         populatePreviousSelections('recall14', prepareSelectionsForSurveySection(14));
                         populatePreviousSelections('recall15', prepareSelectionsForSurveySection(15));
                         document.getElementById('questionnaireSection1').style.display = 'block';
+                        
+                        // 保存最后的结果
+                        fetch('/save_data', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ userId: userId, level: level })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);  // 可以在这里处理返回的响应，例如显示保存成功的消息
+                        })
+                        .catch(error => console.error('Error:', error));
+
                     } else {
 
                         loadWords(currentSet); // 加载新一组单词和线索
                     }
-                }
-            })
-            .catch(error => console.error('Error:', error));
 
-            // 保存最后的结果
-            fetch('/save_data', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ level: level })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);  // 可以在这里处理返回的响应，例如显示保存成功的消息
+                    // Reset the selections
+                    resetWordSelections();
+                }
             })
             .catch(error => console.error('Error:', error));
 
