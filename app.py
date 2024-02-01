@@ -7,18 +7,14 @@ import json
 app = Flask(__name__)
 
 # heroku部署
-DATABASE_URL = os.environ['DATABASE_URL']
-conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+# DATABASE_URL = os.environ['DATABASE_URL']
+# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 # 本地部署
-# DATABASE_URL = "postgresql://postgres:010128@localhost:5432/mydatabase"
-# conn = psycopg2.connect(DATABASE_URL)
+DATABASE_URL = "postgresql://postgres:010128@localhost:5432/mydatabase"
+conn = psycopg2.connect(DATABASE_URL)
 
 user_data = {} # 字典用于存储用户数据
-current_set = -5
-submission_count = 0
-
-
 
 def load_json_data():
     with open('words.json', 'r') as file:
@@ -55,30 +51,24 @@ def get_answers(set_number):
 
 @app.route('/submit_selected_words', methods=['POST'])
 def submit_selected_words():
-    global current_set, submission_count
+
     data = request.json
     selected_words = data.get('words')
     time_taken = data.get('timeTaken')
-    print(selected_words, time_taken)  # 打印接收到的单词列表
+    current_set = data.get('set')
+    firstChoiceMade = data.get('firstChoiceMade')
 
     set_key = f'Set{current_set}'
     if set_key not in user_data:
         user_data[set_key] = {}
 
     # 检查是否为当前轮次的第一次或第二次提交
-    if submission_count == 0:
+    if firstChoiceMade == False:
         user_data[f'Set{current_set}']['selection1'] = selected_words
         user_data[f'Set{current_set}']['time_taken1'] = time_taken
-        submission_count = 1
     else:
         user_data[f'Set{current_set}']['selection2'] = selected_words
         user_data[f'Set{current_set}']['time_taken2'] = time_taken
-
-        # 重置计数器并移动到下一个轮次
-        submission_count = 0
-        current_set += 1
-        if current_set == 0:
-            current_set = 1
 
     return jsonify({"status": "success", "words": selected_words})
 
@@ -113,4 +103,4 @@ def save_data():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
