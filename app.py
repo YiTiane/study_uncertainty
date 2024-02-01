@@ -7,12 +7,12 @@ import json
 app = Flask(__name__)
 
 # heroku部署
-# DATABASE_URL = os.environ['DATABASE_URL']
-# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+DATABASE_URL = os.environ['DATABASE_URL']
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 # 本地部署
-DATABASE_URL = "postgresql://postgres:010128@localhost:5432/mydatabase"
-conn = psycopg2.connect(DATABASE_URL)
+# DATABASE_URL = "postgresql://postgres:010128@localhost:5432/mydatabase"
+# conn = psycopg2.connect(DATABASE_URL)
 
 user_data = {} # 字典用于存储用户数据
 
