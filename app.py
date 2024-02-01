@@ -75,20 +75,9 @@ def submit_selected_words():
         else:
             user_data[set_key]['selection2'] = selected_words
             user_data[set_key]['time_taken2'] = time_taken
-
-    return jsonify({"status": "success", "words": selected_words})
-
-# @app.route('/save_data', methods=['POST'])
-# def save_data():
-#     data = request.json
-#     level = data.get('level')
-
-#     # 将 user_data 保存到 JSON 文件
-#     with open(f'user_data_{level}.json', 'w') as file:
-#         json.dump(user_data, file, indent=4)
     
-#     print('save successful!')
-#     return jsonify({"status": "data_saved", "level": level})
+    print(user_data[set_key])
+    return jsonify({"status": "success", "words": selected_words})
 
 @app.route('/save_data', methods=['POST'])
 def save_data():
@@ -96,9 +85,10 @@ def save_data():
     user_Id = data.get('userId')
     level = data.get('level')
 
+    print(data)
     # 使用锁来同步对 user_data 的访问
     with data_lock:
-        user_data_json = json.dumps(user_data, indent=4)
+        user_data_json = json.dumps(user_data)
 
     # 插入数据到 PostgreSQL 数据库
     with conn.cursor() as cur:
@@ -110,4 +100,4 @@ def save_data():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(threaded=True)
