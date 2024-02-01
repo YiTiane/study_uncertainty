@@ -57,6 +57,7 @@ def submit_selected_words():
     time_taken = data.get('timeTaken')
     current_set = data.get('set')
     firstChoiceMade = data.get('firstChoiceMade')
+    print(selected_words, time_taken, current_set, firstChoiceMade)
 
     set_key = f'Set{current_set}'
     if set_key not in user_data:
@@ -64,11 +65,15 @@ def submit_selected_words():
 
     # 检查是否为当前轮次的第一次或第二次提交
     if firstChoiceMade == False:
-        user_data[f'Set{current_set}']['selection1'] = selected_words
-        user_data[f'Set{current_set}']['time_taken1'] = time_taken
+        user_data[set_key]['selection1'] = selected_words
+        user_data[set_key]['time_taken1'] = time_taken
+        print(user_data[set_key]['selection1'])
+        print(user_data[set_key]['time_taken1'])
     else:
-        user_data[f'Set{current_set}']['selection2'] = selected_words
-        user_data[f'Set{current_set}']['time_taken2'] = time_taken
+        user_data[set_key]['selection2'] = selected_words
+        user_data[set_key]['time_taken2'] = time_taken
+        print(user_data[set_key]['selection2'])
+        print(user_data[set_key]['time_taken2'])
 
     return jsonify({"status": "success", "words": selected_words})
 
