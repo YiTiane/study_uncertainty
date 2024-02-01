@@ -15,7 +15,7 @@ conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 # DATABASE_URL = "postgresql://postgres:010128@localhost:5432/mydatabase"
 # conn = psycopg2.connect(DATABASE_URL)
 
-user_data = {f'Set{i}': {} for i in range(-5, 16) if i != 0}
+# user_data = {f'Set{i}': {} for i in range(-5, 16) if i != 0}
 
 # 创建一个锁
 data_lock = threading.Lock()
@@ -53,42 +53,45 @@ def get_answers(set_number):
     answers = data['answers'].get(f'Set{set_number}', {})
     return jsonify(answers)
 
-@app.route('/submit_selected_words', methods=['POST'])
-def submit_selected_words():
+# @app.route('/submit_selected_words', methods=['POST'])
+# def submit_selected_words():
 
-    data = request.json
-    selected_words = data.get('words')
-    time_taken = data.get('timeTaken')
-    current_set = data.get('set')
-    firstChoiceMade = data.get('firstChoiceMade')
+#     data = request.json
+#     selected_words = data.get('words')
+#     time_taken = data.get('timeTaken')
+#     current_set = data.get('set')
+#     firstChoiceMade = data.get('firstChoiceMade')
 
-    set_key = f'Set{current_set}'
+#     set_key = f'Set{current_set}'
 
-    # 使用锁来同步对 user_data 的访问
-    with data_lock:
-        if not firstChoiceMade:
-            user_data[set_key]['selection1'] = selected_words
-            user_data[set_key]['time_taken1'] = time_taken
-        else:
-            user_data[set_key]['selection2'] = selected_words
-            user_data[set_key]['time_taken2'] = time_taken
+#     # 使用锁来同步对 user_data 的访问
+#     with data_lock:
+#         if not firstChoiceMade:
+#             user_data[set_key]['selection1'] = selected_words
+#             user_data[set_key]['time_taken1'] = time_taken
+#         else:
+#             user_data[set_key]['selection2'] = selected_words
+#             user_data[set_key]['time_taken2'] = time_taken
 
-    return jsonify({"status": "success", "words": selected_words})
+#     return jsonify({"status": "success", "words": selected_words})
 
 @app.route('/save_data', methods=['POST'])
 def save_data():
     data = request.json
     user_Id = data.get('userId')
     level = data.get('level')
+    warmupAccuracy = data.get('warmupAccuracy')
+    Accuracy = data.get('Accuracy')
+    allSelections = data.get('allSelections')
 
-    print(data)
+    # print(data)
     # 使用锁来同步对 user_data 的访问
     with data_lock:
-        user_data_json = json.dumps(user_data)
+        user_data_json = json.dumps(allSelections)
 
     # 插入数据到 PostgreSQL 数据库
     with conn.cursor() as cur:
-        cur.execute("INSERT INTO user_data (user_ID, level, data) VALUES (%s, %s, %s)", (user_Id, level, user_data_json))
+        cur.execute("INSERT INTO user_data (user_ID, level, warmupAccuracy, Accuracy, data) VALUES (%s, %s, %s, %s, %s)", (user_Id, level, warmupAccuracy, Accuracy, user_data_json))
         conn.commit()
 
     print('save successful!')

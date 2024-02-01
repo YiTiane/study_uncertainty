@@ -317,7 +317,10 @@
         
         let currentSet = -5; // 假定热身实验从 -5 开始
         let allSelections = [];
-        let warmupAccuracyRate = 0;
+        let warmupAccuracyRate1 = 0;
+        let warmupAccuracyRate2 = 0;
+        let AccuracyRate1 = 0;
+        let AccuracyRate2 = 0;
 
         document.getElementById('startLearning').addEventListener('click', function() {
             document.getElementById('introSection').style.display = 'none';
@@ -459,23 +462,38 @@
             document.getElementById('warmupSection').style.display = 'block';
         });
         
+        function calculateAccuracy1(setNumber) {
+            return new Promise((resolve, reject) => {
+                fetch(`/get_answers/${setNumber}`)
+                    .then(response => response.json())
+                    .then(correctAnswers => {
+                        let userSelections = allSelections.find(selection => selection.set === setNumber).firstRound;
+                        let correctCount = userSelections.filter(word => correctAnswers.includes(word)).length;
+                        let accuracyRate = (correctCount / correctAnswers.length) * 100;
+                        resolve(accuracyRate); // 使用 resolve 返回正确率
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        reject(error); // 使用 reject 处理错误情况
+                    });
+            });
+        }
 
-        function calculateAccuracy(setNumber) {
-            // Fetch the correct answers for the warmup set
-            fetch(`/get_answers/${setNumber}`)
-                .then(response => response.json())
-                .then(correctAnswers => {
-                    let userSelections = allSelections.find(selection => selection.set === setNumber).secondRound;
-                    let correctCount = userSelections.filter(word => correctAnswers.includes(word)).length;
-                    let accuracyRate = (correctCount / correctAnswers.length) * 100;
-                    // Display the accuracy rate
-                    warmupAccuracyRate = warmupAccuracyRate + accuracyRate / 5.0
-                    console.log(warmupAccuracyRate)
-                    if (setNumber == -1){
-                        document.getElementById('accuracyRate').textContent = warmupAccuracyRate.toFixed(2) + '%';
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+        function calculateAccuracy2(setNumber) {
+            return new Promise((resolve, reject) => {
+                fetch(`/get_answers/${setNumber}`)
+                    .then(response => response.json())
+                    .then(correctAnswers => {
+                        let userSelections = allSelections.find(selection => selection.set === setNumber).secondRound;
+                        let correctCount = userSelections.filter(word => correctAnswers.includes(word)).length;
+                        let accuracyRate = (correctCount / correctAnswers.length) * 100;
+                        resolve(accuracyRate); // 使用 resolve 返回正确率
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        reject(error); // 使用 reject 处理错误情况
+                    });
+            });
         }
 
         document.getElementById('proceedAfterAccuracy').addEventListener('click', function() {
@@ -595,100 +613,159 @@
             let requiredWordsCount = parseInt(document.getElementById(wordCountId).textContent, 10);
 
             // Check if the selected words match the required count
-            console.log(selectedWords);
-            console.log(requiredWordsCount);
+            // console.log(selectedWords);
+            // console.log(requiredWordsCount);
             if (selectedWords.length !== requiredWordsCount) {
                 alert(`Please select exactly ${requiredWordsCount} words as per the clue.`);
                 return; // Exit the function without submitting
             }
 
-            // 发送选中的单词到后端
-            fetch('/submit_selected_words', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ words: selectedWords, timeTaken: timeTaken, set: currentSet, firstChoiceMade: firstChoiceMade })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                if (!firstChoiceMade) {
-                    // Store the first round selections
-                    displayFirstRoundSelections(selectedWords);
-                    allSelections.push({ set: currentSet, firstRound: selectedWords, secondRound: [] });
+            // // 发送选中的单词到后端
+            // fetch('/submit_selected_words', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ words: selectedWords, timeTaken: timeTaken, set: currentSet, firstChoiceMade: firstChoiceMade })
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     console.log(data);
+            if (!firstChoiceMade) {
+                // Store the first round selections
+                displayFirstRoundSelections(selectedWords);
+                allSelections.push({ set: currentSet, firstRound: selectedWords, time_taken1: timeTaken, secondRound: [], time_taken2: 0});
 
-                    // Reset the selections
-                    resetWordSelections();
-                    // Player makes the first choice
-                    showAiHints(true); // Show AI hints after first choice
-                    firstChoiceMade = true; // Update the flag
-                } else {
-                    let currentSelection = allSelections.find(selection => selection.set === currentSet);
-                    if (currentSelection) {
-                        currentSelection.secondRound = selectedWords;
+                // Reset the selections
+                resetWordSelections();
+                // Player makes the first choice
+                showAiHints(true); // Show AI hints after first choice
+                firstChoiceMade = true; // Update the flag
+            } else {
+                let currentSelection = allSelections.find(selection => selection.set === currentSet);
+                if (currentSelection) {
+                    currentSelection.secondRound = selectedWords;
+                    currentSelection.time_taken2 = timeTaken;
+                }
+
+                currentSet++; // 增加set_number
+                document.getElementById('selectedWordsList1').innerHTML = '';
+                document.getElementById('selectedWordsList2').innerHTML = '';
+                    
+                if (currentSet == 0) {
+                    let promises1 = [];
+                    let promises2 = [];
+                    for (let set = -5; set <= -1; set++) {
+                        promises1.push(calculateAccuracy1(set));
+                        promises2.push(calculateAccuracy2(set));
+                    }
+                    console.log(promises1);
+                    console.log(promises2);
+
+                    Promise.all(promises1)
+                        .then(accuracyRates => {
+                            warmupAccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
+                        })
+                        .catch(error => {
+                            // 处理错误情况
+                            console.error('Error:', error);
+                        });
+
+                    Promise.all(promises2)
+                        .then(accuracyRates => {
+                            warmupAccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
+                            document.getElementById('accuracyRate').textContent = warmupAccuracyRate2.toFixed(2) + '%';
+                            // 如果需要处理 warmupAccuracyRate2，可以在这里进行
+                        })
+                        .catch(error => {
+                            // 处理错误情况
+                            console.error('Error:', error);
+                        });
+
+                    document.getElementById('warmupSection').style.display = 'none';
+                    // document.getElementById('transitionSection2').style.display = 'block';
+                    document.getElementById('accuracyRateSection').style.display = 'block';
+                        
+                } else if (currentSet == 16) {
+
+                    let promises1 = [];
+                    let promises2 = [];
+
+                    for (let set = 1; set <= 15; set++) {
+                        promises1.push(calculateAccuracy1(set));
+                        promises2.push(calculateAccuracy2(set));
                     }
 
-                    currentSet++; // 增加set_number
-                    document.getElementById('selectedWordsList1').innerHTML = '';
-                    document.getElementById('selectedWordsList2').innerHTML = '';
-                    
-                    if (currentSet == 0) {
-                        for (let set = -5; set <= -1; set++) {
-                            calculateAccuracy(set);
-                        }
+                    Promise.all(promises1)
+                        .then(accuracyRates => {
+                            let totalAccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0);
+                            AccuracyRate1 = totalAccuracyRate1 / accuracyRates.length;
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
 
-                        document.getElementById('warmupSection').style.display = 'none';
-                        // document.getElementById('transitionSection2').style.display = 'block';
-                        document.getElementById('accuracyRateSection').style.display = 'block';
-                        
-                    } else if (currentSet == 16) {
-                        document.getElementById('mainContent').style.display = 'none';
+                    Promise.all(promises2)
+                        .then(accuracyRates => {
+                            let totalAccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0);
+                            AccuracyRate2 = totalAccuracyRate2 / accuracyRates.length;
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
 
-                        // Prepare selections for the first survey section
+                    document.getElementById('mainContent').style.display = 'none';
+
+                    // Prepare selections for the first survey section
                         // const selectionsForSection1 = prepareSelectionsForSurveySection(1);
                         // Populate the selections in the HTML
-                        populatePreviousSelections('recall1', prepareSelectionsForSurveySection(1));
-                        populatePreviousSelections('recall2', prepareSelectionsForSurveySection(2));
-                        populatePreviousSelections('recall3', prepareSelectionsForSurveySection(3));
-                        populatePreviousSelections('recall4', prepareSelectionsForSurveySection(4));
-                        populatePreviousSelections('recall5', prepareSelectionsForSurveySection(5));
-                        populatePreviousSelections('recall6', prepareSelectionsForSurveySection(6));
-                        populatePreviousSelections('recall7', prepareSelectionsForSurveySection(7));
-                        populatePreviousSelections('recall8', prepareSelectionsForSurveySection(8));
-                        populatePreviousSelections('recall9', prepareSelectionsForSurveySection(9));
-                        populatePreviousSelections('recall10', prepareSelectionsForSurveySection(10));
-                        populatePreviousSelections('recall11', prepareSelectionsForSurveySection(11));
-                        populatePreviousSelections('recall12', prepareSelectionsForSurveySection(12));
-                        populatePreviousSelections('recall13', prepareSelectionsForSurveySection(13));
-                        populatePreviousSelections('recall14', prepareSelectionsForSurveySection(14));
-                        populatePreviousSelections('recall15', prepareSelectionsForSurveySection(15));
-                        document.getElementById('questionnaireSection1').style.display = 'block';
+                    populatePreviousSelections('recall1', prepareSelectionsForSurveySection(1));
+                    populatePreviousSelections('recall2', prepareSelectionsForSurveySection(2));
+                    populatePreviousSelections('recall3', prepareSelectionsForSurveySection(3));
+                    populatePreviousSelections('recall4', prepareSelectionsForSurveySection(4));
+                    populatePreviousSelections('recall5', prepareSelectionsForSurveySection(5));
+                    populatePreviousSelections('recall6', prepareSelectionsForSurveySection(6));
+                    populatePreviousSelections('recall7', prepareSelectionsForSurveySection(7));
+                    populatePreviousSelections('recall8', prepareSelectionsForSurveySection(8));
+                    populatePreviousSelections('recall9', prepareSelectionsForSurveySection(9));
+                    populatePreviousSelections('recall10', prepareSelectionsForSurveySection(10));
+                    populatePreviousSelections('recall11', prepareSelectionsForSurveySection(11));
+                    populatePreviousSelections('recall12', prepareSelectionsForSurveySection(12));
+                    populatePreviousSelections('recall13', prepareSelectionsForSurveySection(13));
+                    populatePreviousSelections('recall14', prepareSelectionsForSurveySection(14));
+                    populatePreviousSelections('recall15', prepareSelectionsForSurveySection(15));
+                    document.getElementById('questionnaireSection1').style.display = 'block';
                         
-                        // 保存最后的结果
-                        fetch('/save_data', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ userId: userId, level: level })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data);  // 可以在这里处理返回的响应，例如显示保存成功的消息
-                        })
-                        .catch(error => console.error('Error:', error));
+                    // 保存最后的结果
+                    fetch('/save_data', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ userId: userId, level: level, warmupAccuracy: [warmupAccuracyRate1, warmupAccuracyRate2], Accuracy: [AccuracyRate1, AccuracyRate2], allSelections: allSelections })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        } else {
+                            return response.json();
+                        }
+                    })
+                    .then(data => {
+                        console.log(data);  // Can handle the response here, such as displaying a success message
+                    })
+                    .catch(error => console.error('Error:', error));
 
-                    } else {
+                } else {
 
-                        loadWords(currentSet); // 加载新一组单词和线索
-                    }
+                    loadWords(currentSet); // 加载新一组单词和线索
+                }
 
                     // Reset the selections
-                    resetWordSelections();
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                resetWordSelections();
+            }
+            // })
+            // .catch(error => console.error('Error:', error));
 
             if (currentSet > 0) {
                 // document.getElementById('currentSetDisplay').textContent = `Current Set: ${setNumber}`;
