@@ -15,7 +15,7 @@ conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 # DATABASE_URL = "postgresql://postgres:010128@localhost:5432/mydatabase"
 # conn = psycopg2.connect(DATABASE_URL)
 
-user_data = {} # 字典用于存储用户数据
+user_data = {f'Set{i}': {} for i in range(-5, 16) if i != 0}
 
 # 创建一个锁
 data_lock = threading.Lock()
@@ -66,17 +66,13 @@ def submit_selected_words():
 
     # 使用锁来同步对 user_data 的访问
     with data_lock:
-        if set_key not in user_data:
-            user_data[set_key] = {}
-
         if not firstChoiceMade:
             user_data[set_key]['selection1'] = selected_words
             user_data[set_key]['time_taken1'] = time_taken
         else:
             user_data[set_key]['selection2'] = selected_words
             user_data[set_key]['time_taken2'] = time_taken
-    
-    print(user_data[set_key])
+
     return jsonify({"status": "success", "words": selected_words})
 
 @app.route('/save_data', methods=['POST'])
