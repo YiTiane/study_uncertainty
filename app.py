@@ -2,6 +2,7 @@ import os
 import psycopg2
 from flask import Flask, render_template, jsonify, request
 import random
+import threading
 import json
 
 app = Flask(__name__)
@@ -15,6 +16,9 @@ conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 # conn = psycopg2.connect(DATABASE_URL)
 
 user_data = {} # 字典用于存储用户数据
+
+# 创建一个锁
+data_lock = threading.Lock()
 
 def load_json_data():
     with open('words.json', 'r') as file:
@@ -57,23 +61,20 @@ def submit_selected_words():
     time_taken = data.get('timeTaken')
     current_set = data.get('set')
     firstChoiceMade = data.get('firstChoiceMade')
-    print(selected_words, time_taken, current_set, firstChoiceMade)
 
     set_key = f'Set{current_set}'
-    if set_key not in user_data:
-        user_data[set_key] = {}
 
-    # 检查是否为当前轮次的第一次或第二次提交
-    if firstChoiceMade == False:
-        user_data[set_key]['selection1'] = selected_words
-        user_data[set_key]['time_taken1'] = time_taken
-        print(user_data[set_key]['selection1'])
-        print(user_data[set_key]['time_taken1'])
-    else:
-        user_data[set_key]['selection2'] = selected_words
-        user_data[set_key]['time_taken2'] = time_taken
-        print(user_data[set_key]['selection2'])
-        print(user_data[set_key]['time_taken2'])
+    # 使用锁来同步对 user_data 的访问
+    with data_lock:
+        if set_key not in user_data:
+            user_data[set_key] = {}
+
+        if not firstChoiceMade:
+            user_data[set_key]['selection1'] = selected_words
+            user_data[set_key]['time_taken1'] = time_taken
+        else:
+            user_data[set_key]['selection2'] = selected_words
+            user_data[set_key]['time_taken2'] = time_taken
 
     return jsonify({"status": "success", "words": selected_words})
 
@@ -95,8 +96,9 @@ def save_data():
     user_Id = data.get('userId')
     level = data.get('level')
 
-    # 将 user_data 转换为 JSON 字符串
-    user_data_json = json.dumps(user_data, indent=4)
+    # 使用锁来同步对 user_data 的访问
+    with data_lock:
+        user_data_json = json.dumps(user_data, indent=4)
 
     # 插入数据到 PostgreSQL 数据库
     with conn.cursor() as cur:
