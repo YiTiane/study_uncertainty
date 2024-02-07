@@ -64,6 +64,26 @@ body {
     transform: scale(1.05); /* 鼠标悬停时轻微放大 */
 }
 
+.sbtn {
+    border: 1px solid #ddd; /* 与单词格相同的边框 */
+    background-color: #4CAF50; /* 绿色背景 */
+    padding: 10px 20px; /* 适当的填充 */
+    text-align: center; /* 文字居中 */
+    cursor: pointer; /* 鼠标指针变为手形 */
+    border-radius: 4px; /* 圆角 */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* 与单词格相同的阴影 */
+    transition: background-color 0.3s, transform 0.3s; /* 过渡效果 */
+    font-size: 16px; /* 字体大小 */
+    display: block; /* 使按钮成为块级元素 */
+    margin: 20px auto; /* 居中并有适当的外边距 */
+    width: fit-content; /* 宽度适应内容 */
+}
+
+.sbtn:hover {
+    background-color: #e9ecef; /* 鼠标悬停时的背景颜色 */
+    transform: scale(1.05); /* 鼠标悬停时轻微放大 */
+}
+
 .game-rules-section {
     width: 100%; /* 占满整个容器宽度 */
     margin: auto; /* 自动外边距实现水平居中 */

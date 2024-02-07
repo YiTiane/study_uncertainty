@@ -13,7 +13,8 @@
         <p>Welcome to our AI-Assisted Decision Making Study!</p>
         <p>In this study, you will play a simplified version of the popular board game "Codenames" with AI assistance. AI will give you suggestions with or without uncertainty to aid your decision making.</p>
         <p>In this special version of "Codenames", you will play solo with the system. The system acts as the "Codemaster", providing clues comprising a word (clue) and a corresponding number of words associated with it. Your task is to select the most relevant words based on the clue, with the AI acting as a Suggester.</p>
-        <p>Note: Do not refresh the page while the study is in progress!</p>
+        <p>Note 1: Do not refresh the page while the study is in progress!</p>
+        <p>Note 2: For each decision, you must think for at least 15 seconds before clicking the submit button.</p>
         <div class="image-container">
             <img src="../static/procedure.png" alt="Experiment Flowchart" class="centered-image">
         </div>
@@ -142,7 +143,7 @@
                 <div id="warmupWordGrid" class="word-grid">
                     <!-- 词汇将在这里显示 -->
                 </div>
-                <button id="warmupSubmitWords" class="btn">submit</button>
+                <button id="warmupSubmitWords" class="sbtn">submit</button>
             </div>
             
             <div class="ai-container">
@@ -220,7 +221,7 @@
                 <div id="wordGrid" class="word-grid">
                     <!-- 词汇将在这里显示 -->
                 </div>
-                <button id="submitWords" class="btn">submit</button>
+                <button id="submitWords" class="sbtn">submit</button>
             </div>
 
             <div class="ai-container">
@@ -546,7 +547,7 @@
         // Show or hide submit buttoon
         function showSubmitButton(show) {
             // 获取所有submit按钮的引用，这里假设你已经给这些按钮设置了特定的类名或id
-            const submitButtons = document.querySelectorAll('.btn'); // 假设所有相关的submit按钮都有一个共同的类名"submit-btn"
+            const submitButtons = document.querySelectorAll('.sbtn'); // 假设所有相关的submit按钮都有一个共同的类名"submit-btn"
 
             // 遍历所有按钮并根据参数show的值来显示或隐藏它们
             submitButtons.forEach(button => {
