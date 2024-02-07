@@ -515,9 +515,15 @@
         function startMainTimer() {
             clearInterval(mainInterval); // 清除之前的计时器（如果有）
             mainSeconds = 0;
+            showSubmitButton(false);
+
             mainInterval = setInterval(() => {
                 mainSeconds++;
                 document.getElementById('mainTime').textContent = formatTime(mainSeconds);
+                // 当计时器达到或超过10秒时，显示submit按钮
+                if (mainSeconds >= 15) {
+                    showSubmitButton(true);
+                }
             }, 1000);
         }
 
@@ -536,6 +542,18 @@
                 container.style.display = show ? 'block' : 'none';
             });
         }
+
+        // Show or hide submit buttoon
+        function showSubmitButton(show) {
+            // 获取所有submit按钮的引用，这里假设你已经给这些按钮设置了特定的类名或id
+            const submitButtons = document.querySelectorAll('.btn'); // 假设所有相关的submit按钮都有一个共同的类名"submit-btn"
+
+            // 遍历所有按钮并根据参数show的值来显示或隐藏它们
+            submitButtons.forEach(button => {
+                button.style.display = show ? 'block' : 'none';
+            });
+        }
+
 
         function loadWords(setNumber) {
             
@@ -566,7 +584,7 @@
                 .catch(error => console.error('Error:', error));
 
             loadClues(setNumber); // 同时加载线索和单词数量
-            loadAiHint(setNumber); // 加载AI提示
+            // loadAiHint(setNumber); // 加载AI提示
         }
 
         function displayFirstRoundSelections(selectedWords) {
@@ -620,17 +638,6 @@
                 return; // Exit the function without submitting
             }
 
-            // // 发送选中的单词到后端
-            // fetch('/submit_selected_words', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ words: selectedWords, timeTaken: timeTaken, set: currentSet, firstChoiceMade: firstChoiceMade })
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     console.log(data);
             if (!firstChoiceMade) {
                 // Store the first round selections
                 displayFirstRoundSelections(selectedWords);
@@ -640,6 +647,7 @@
                 resetWordSelections();
                 // Player makes the first choice
                 showAiHints(true); // Show AI hints after first choice
+                loadAiHint(currentSet); // 加载AI提示
                 firstChoiceMade = true; // Update the flag
             } else {
                 let currentSelection = allSelections.find(selection => selection.set === currentSet);
@@ -659,8 +667,6 @@
                         promises1.push(calculateAccuracy1(set));
                         promises2.push(calculateAccuracy2(set));
                     }
-                    console.log(promises1);
-                    console.log(promises2);
 
                     Promise.all(promises1)
                         .then(accuracyRates => {
@@ -698,8 +704,7 @@
 
                     Promise.all(promises1)
                         .then(accuracyRates => {
-                            let totalAccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0);
-                            AccuracyRate1 = totalAccuracyRate1 / accuracyRates.length;
+                            AccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
                         })
                         .catch(error => {
                             console.error('Error:', error);
@@ -707,8 +712,7 @@
 
                     Promise.all(promises2)
                         .then(accuracyRates => {
-                            let totalAccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0);
-                            AccuracyRate2 = totalAccuracyRate2 / accuracyRates.length;
+                            AccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
                         })
                         .catch(error => {
                             console.error('Error:', error);
@@ -767,7 +771,7 @@
             // })
             // .catch(error => console.error('Error:', error));
 
-            if (currentSet > 0) {
+            if (currentSet > -6) {
                 // document.getElementById('currentSetDisplay').textContent = `Current Set: ${setNumber}`;
                 startMainTimer(); // 只有在正式实验部分才启动计时器
             }
@@ -778,6 +782,19 @@
         // 为热身实验的提交按钮添加事件监听器
         document.getElementById('warmupSubmitWords').addEventListener('click', handleSubmit);
 
+        // 打字闪烁效果实现
+        function typeWriterEffect(text, elementId, typingSpeed) {
+            let i = 0;
+            function typing() {
+                if (i < text.length) {
+                    document.getElementById(elementId).innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typing, typingSpeed);
+                }
+            }
+            typing();
+        }
+
 
         function loadAiHint(setNumber) {
             fetch(`/get_ai_hint/${setNumber}`)
@@ -786,12 +803,17 @@
                     let chatBoxId = currentSet < 0 ? 'warmupchatBox' : 'chatBox';
                     const chatBox = document.getElementById(chatBoxId);
                     chatBox.innerHTML = ''; // 清空当前的提示信息
-                    const highHint = aiHints[level];
-                    if (highHint && highHint.length > 0) {
-                        const messageElement = document.createElement('p');
-                        messageElement.textContent = highHint;
-                        // console.log(highHint)
-                        chatBox.appendChild(messageElement);
+                    const hint = aiHints[level];
+                    // if (highHint && highHint.length > 0) {
+                    //     const messageElement = document.createElement('p');
+                    //     messageElement.textContent = highHint;
+                    //     // console.log(highHint)
+                    //     chatBox.appendChild(messageElement);
+                    // }
+
+                    if (hint && hint.length > 0) {
+                        chatBox.innerHTML = ''; // 清空当前的提示信息以准备显示新提示
+                        typeWriterEffect(hint, chatBoxId, 20); // 使用打字效果函数显示AI提示
                     }
                 })
                 .catch(error => console.error('Error:', error));

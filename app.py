@@ -53,28 +53,6 @@ def get_answers(set_number):
     answers = data['answers'].get(f'Set{set_number}', {})
     return jsonify(answers)
 
-# @app.route('/submit_selected_words', methods=['POST'])
-# def submit_selected_words():
-
-#     data = request.json
-#     selected_words = data.get('words')
-#     time_taken = data.get('timeTaken')
-#     current_set = data.get('set')
-#     firstChoiceMade = data.get('firstChoiceMade')
-
-#     set_key = f'Set{current_set}'
-
-#     # 使用锁来同步对 user_data 的访问
-#     with data_lock:
-#         if not firstChoiceMade:
-#             user_data[set_key]['selection1'] = selected_words
-#             user_data[set_key]['time_taken1'] = time_taken
-#         else:
-#             user_data[set_key]['selection2'] = selected_words
-#             user_data[set_key]['time_taken2'] = time_taken
-
-#     return jsonify({"status": "success", "words": selected_words})
-
 @app.route('/save_data', methods=['POST'])
 def save_data():
     data = request.json
@@ -100,3 +78,4 @@ def save_data():
 
 if __name__ == '__main__':
     app.run(threaded=True)
+    # app.run(debug=True)
