@@ -7,14 +7,100 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <div id="consentFormPage" class="consent-form-page">
+        <h2>PARTICIPANT INFORMATION SHEET & CONSENT FORM</h2>
+        <div class="consent-form-content">
+            <!-- Add all the consent form content here -->
+            <p>Please read through the following information before deciding whether to register for this study.</p>
+            <!-- Include all sections from your provided content -->
+            <h1>1. Protocol Title</h1>
+            <p>AI-assisted decision making in a word guessing game</p>
+
+            <h1>2. Principal Investigator and co-investigator(s)</h1>
+            <p>Principal Investigator: Lee Yi-Chieh, NUS School of Computing, yclee@nus.edu.sg</p>
+            <p>Co-Investigators: Xu Zhengtao, NUS School of Computing, xuzhengtao@u.nus.edu</p>
+
+            <h1>3. What is the purpose of this research? </h1>
+            <p>You are invited to participate in a research study. This information sheet provides you with information 
+                about the research study. The Principal Investigator (the person in charge of this research) or his/her 
+                representative will also describe this research to you and answer all of your questions. Read the information 
+                below and ask questions about anything you don't understand before deciding whether or not to take part.
+                This study aims to investigate the user experience and behavior in an AI-assisted word guessing game.  
+            </p>
+
+            <h1>4. Who can participate in the research? What is the expected duration of my participation? What is the duration of this research?</h1>
+            <p>All adults aged 21 and above with access to a computer with internet access are eligible to participate. 
+                Each participant will be required to spend around 30 min. The duration of the study as a whole is Nov. 2023 - Nov. 2024.
+            </p>
+
+            <h1>5. What is the approximate number of research participants involved?</h1>
+            <p>300 participants in total.</p>
+
+            <h1>6. What will be done if I take part in this research study?</h1>
+            <p>You will participate in a word guessing game assisted by AI and you will not be asked to 
+                send voice messages or other forms of media such as images. You may be asked to answer some questions or 
+                complete a survey, but you will not be asked to provide any personally identifiable information.</p>
+
+            <h1>7. How will my privacy and the confidentiality of my research records be protected?</h1>
+            <p>Only the principal investigator and co-investigator have your personal data (e.g. contact information),
+               and this will not be released to any other person, including other members of the research team. 
+               Personal data will never be used in a publication or presentation. All identifiable research data will be coded 
+               (i.e. only identified with a code number) at the earliest possible stage of the research. Personal data will be 
+               discarded within 1 months of your participation in the study.<br>
+               All data collected will be kept in accordance with the University's Research Data Management Policy. 
+                Research data used in any publication will be kept for a minimum of 10 years before being discarded.</p>
+
+            <h1>8. What are the possible discomforts and risks for participants?</h1>
+            <p>No specific physical or mental discomforts or risks are anticipated.</p>
+
+            <h1>9. What is the compensation for any injury?</h1>
+            <p>As this is a remote study that you can complete on a computer at any place of your choosing, no injury is expected.</p>
+            
+            <h1>10. Will there be reimbursement for participation?</h1>
+            <p>Participants completing the task and surveys will be compensated with £3.75. </p>
+
+            <h1>11. What are the possible benefits to me and to others?</h1>
+            <p>There is no direct benefit to you by participating in this research study. The knowledge gained may benefit the public in the future.</p>
+            
+            <h1>12. Can I refuse to participate in this research?</h1>
+            <p>Yes, you can. Your decision to participate in this research study is voluntary and completely up to you. 
+                You can also withdraw from the research at any time without giving any reasons, by informing the principal 
+                investigator and all your data collected will be discarded.</p>
+            
+            <h1>13. Whom should I call if I have any questions or problems?</h1>
+            <p>Please contact the Principal Investigator, Lee Yi-Chieh, at email: yclee@nus.edu.sg for all research-related 
+                matters and in the event of research-related injuries.<br>
+                For an independent opinion specifically regarding the rights and welfare of research participants, you may 
+                email at socderc@comp.nus.edu.sg.</p>
+
+            <p>Principal Investigator with the contact number and organization: <br>
+                Lee Yi-Chieh, NUS School of Computing, yclee@nus.edu.sg, +65 91951214</p>
+
+            <h1>Consent</h1>
+            <p>I hereby acknowledge that:<br>
+                1. I have agreed to take part in the above research.<br>
+                2. I have received a copy of this information sheet that explains the use of my data in thisresearch. I understand its contents and agree to donate my data for the use of this research.<br>
+                3. I can withdraw from the research at any point of time by informing the Principal Investigator and all my data will be discarded.<br>
+                4. I will not have any financial benefits that result from the commercial development of this research.<br>
+                5. I agree to be re-contacted for future related studies. I understand that future studies will be subject to an Institutional Review Board's approval.<br>
+            </p>
+
+            <div class="consent-acknowledgment">
+                <input type="checkbox" id="consentCheckbox">
+                <label for="consentCheckbox">I acknowledge that I have read and agree to the above terms.</label>
+            </div>
+            <button id="proceedButton" class="btn" disabled>Proceed to Study</button>
+        </div>
+    </div>
+
     <!-- 实验介绍指导 -->
-    <div id="introSection" class="intro-section">
+    <div id="introSection" class="intro-section" style="display: none;">
         <h2>User Study for AI-Assisted Decision Making</h2>
         <p>Welcome to our AI-Assisted Decision Making Study!</p>
         <p>In this study, you will play a simplified version of the popular board game "Codenames" with AI assistance. AI will give you suggestions with or without uncertainty to aid your decision making.</p>
         <p>In this special version of "Codenames", you will play solo with the system. The system acts as the "Codemaster", providing clues comprising a word (clue) and a corresponding number of words associated with it. Your task is to select the most relevant words based on the clue, with the AI acting as a Suggester.</p>
         <p>Note 1: Do not refresh the page while the study is in progress!</p>
-        <p>Note 2: For each decision, you must think for at least 15 seconds before clicking the submit button.</p>
+        <p>Note 2: For each decision, you must think for at least 10 seconds before clicking the submit button.</p>
         <div class="image-container">
             <img src="../static/procedure.png" alt="Experiment Flowchart" class="centered-image">
         </div>
@@ -106,7 +192,7 @@
                 <img src="../static/AI_robot.png" alt="AI Accuracy" class="ai-accuracy-image">
             </div>
             <div id="speechBubble" class="speech-bubble">
-                <p id="accuracyText">Hi! I'm your AI suggester. My suggestion accuracy is about</p>
+                <p id="accuracyText">Hi! I'm your AI suggester. My suggestion accuracy is</p>
                 <h3 id="accuracyPercentage">Error!</h3>
             </div>
         </div>
@@ -115,12 +201,12 @@
 
     <!-- 热身实验页面 -->
     <div id="warmupSection" class="main-content" style="display: none;">
-        <div class = 'title'>
-            <h1 style="text-align: center;">Warm-Up Round</h1>
+        <div class="title-progress-container">
+            <div class='title'>
+                <h1>Warm-Up Round</h1>
+            </div>
+            <span id="warmupProgressText" class="progress-text">Progress: 1/5</span>
         </div>
-        <!-- <div class="current-set-container">
-            <h1 id="warmupcurrentSetDisplay"></h1>
-        </div> -->
 
         <div class="clue-container">
             <div class="clue">
@@ -143,7 +229,12 @@
                 <div id="warmupWordGrid" class="word-grid">
                     <!-- 词汇将在这里显示 -->
                 </div>
-                <button id="warmupSubmitWords" class="sbtn">submit</button>
+                <div class="submission-feedback-container">
+                    <button id="warmupSubmitWords" class="sbtn">submit</button>
+                    <div id="warmfeedbackContainer" class="feedback-container" style="display: none;">
+                        <span id="warmfeedbackText"></span>
+                    </div>
+                </div>                
             </div>
             
             <div class="ai-container">
@@ -178,7 +269,7 @@
             <li><strong>Strategy:</strong> Develop a strategy for your guesses. Remember, the AI's suggestions are just recommendations, they might not be correct!</li>
             <li><strong>Pace Yourself:</strong> While there's no time limit, it's important to balance speed with careful consideration.</li>
             <li><strong>Feedback:</strong> Your input is valuable. Post-round, share your thoughts on the AI's performance and your decision-making process.</li>
-            <li><strong>Bonus Rewards:</strong> In addition to the basic experimental rewards, we offer extra rewards based on the number of correctly answered questions by each participant. Strive for accuracy to maximize your rewards!</li>
+            <li><strong>Bonus Rewards:</strong> In addition to the basic experimental rewards, we offer <strong>extra rewards</strong> based on the accuracy of each participant.</li>
             <li><strong>Enjoy:</strong> Above all, enjoy the game! Your engagement and enjoyment are crucial to this experiment.</li>
         </ul>
         <p>When you're ready to dive into the official rounds, press the button below.</p>
@@ -187,14 +278,12 @@
 
     <!-- 主实验页面， 最初不可见 -->
     <div id="mainContent" class="main-content" style="display: none;">
-        <!-- 游戏和其他元素的HTML -->
-        <div class = 'title'>
-            <h1 style="text-align: center;">Official Round</h1>
+        <div class="title-progress-container">
+            <div class='title'>
+                <h1>Official Round</h1>
+            </div>
+            <span id="mainProgressText" class="progress-text">Progress: 1/15</span>
         </div>
-    
-        <!-- <div class="current-set-container">
-            <h1 id="currentSetDisplay"></h1>
-        </div> -->
 
         <div id="timerContainer" class="timer-container">
             Timer: <span id="mainTime">00:00</span>
@@ -221,7 +310,12 @@
                 <div id="wordGrid" class="word-grid">
                     <!-- 词汇将在这里显示 -->
                 </div>
-                <button id="submitWords" class="sbtn">submit</button>
+                <div class="submission-feedback-container">
+                    <button id="submitWords" class="sbtn">submit</button>
+                    <div id="feedbackContainer" class="feedback-container" style="display: none;">
+                        <span id="feedbackText"></span>
+                    </div>
+                </div>  
             </div>
 
             <div class="ai-container">
@@ -322,6 +416,21 @@
         let warmupAccuracyRate2 = 0;
         let AccuracyRate1 = 0;
         let AccuracyRate2 = 0;
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const consentCheckbox = document.getElementById('consentCheckbox');
+            const proceedButton = document.getElementById('proceedButton');
+
+            consentCheckbox.addEventListener('change', function() {
+                proceedButton.disabled = !this.checked; // Enable the button if the checkbox is checked
+            });
+
+            proceedButton.addEventListener('click', function() {
+                document.getElementById('consentFormPage').style.display = 'none'; // Hide consent form
+                document.getElementById('introSection').style.display = 'block';
+            });
+        });
 
         document.getElementById('startLearning').addEventListener('click', function() {
             document.getElementById('introSection').style.display = 'none';
@@ -425,22 +534,22 @@
                 // Example: setting the global variable 'level'
                 if (code === 'v7jw9'){
                     level = 'Low';
-                    accuracy = '90%';
+                    accuracy = 'high';
                 } else if (code === 'okd82'){
                     level = 'Medium';
-                    accuracy = '90%';
+                    accuracy = 'high';
                 } else if (code === 'ps1fj'){
                     level = 'High';
-                    accuracy = '90%';
+                    accuracy = 'high';
                 } else if (code === 'ds8hd'){
                     level = 'Low2';
-                    accuracy = '50%';
+                    accuracy = 'low';
                 } else if (code === 'o39dp'){
                     level = 'Medium2';
-                    accuracy = '50%';
+                    accuracy = 'low';
                 } else if (code === 'duxn3'){
                     level = 'High2';
-                    accuracy = '50%';                
+                    accuracy = 'low';                
                 }
                 // Proceed to the next page if code is valid
                 // Replace 'nextPage' with the actual ID of the next section or page you want to show
@@ -522,7 +631,7 @@
                 mainSeconds++;
                 document.getElementById('mainTime').textContent = formatTime(mainSeconds);
                 // 当计时器达到或超过10秒时，显示submit按钮
-                if (mainSeconds >= 15) {
+                if (!firstChoiceMade && mainSeconds >= 10) {
                     showSubmitButton(true);
                 }
             }, 1000);
@@ -557,11 +666,15 @@
 
 
         function loadWords(setNumber) {
-            
-            if (currentSet == 1) {
-                // document.getElementById('currentSetDisplay').textContent = `Current Set: ${setNumber}`;
-                startMainTimer(); // 只有在正式实验部分才启动计时器
+            // 更新热身游戏进度显示
+            if (currentSet < 0) {
+                let warmupProgress = Math.abs(currentSet + 6); // 由于currentSet从-5开始
+                document.getElementById('warmupProgressText').textContent = `Progress: ${warmupProgress}/5`;
+            } else if (currentSet >= 1) {
+                document.getElementById('mainProgressText').textContent = `Progress: ${currentSet}/15`;
             }
+
+            startMainTimer(); // 只有在正式实验部分才启动计时器
 
             showAiHints(false); //一开始不显示hints
             firstChoiceMade = false;
@@ -639,6 +752,7 @@
                 return; // Exit the function without submitting
             }
 
+
             if (!firstChoiceMade) {
                 // Store the first round selections
                 displayFirstRoundSelections(selectedWords);
@@ -646,9 +760,12 @@
 
                 // Reset the selections
                 resetWordSelections();
+
                 // Player makes the first choice
                 showAiHints(true); // Show AI hints after first choice
                 loadAiHint(currentSet); // 加载AI提示
+                startMainTimer();
+
                 firstChoiceMade = true; // Update the flag
             } else {
                 let currentSelection = allSelections.find(selection => selection.set === currentSet);
@@ -657,140 +774,205 @@
                     currentSelection.time_taken2 = timeTaken;
                 }
 
-                currentSet++; // 增加set_number
-                document.getElementById('selectedWordsList1').innerHTML = '';
-                document.getElementById('selectedWordsList2').innerHTML = '';
+                clearInterval(mainInterval);
+                if (currentSet < 0){
+                    // 请求正确答案
+                    fetch(`/get_answers/${currentSet}`)
+                        .then(response => response.json())
+                        .then(correctAnswers => {
+                            // 假设返回的数据是一个对象，其中包含一个正确答案的列表
+                            
+                            // console.log(correctAnswers)
+                            // console.log(currentSelection)
+
+                            let correctCount = currentSelection.secondRound.filter(word => correctAnswers.includes(word)).length;
+                            let warmfeedbackContainer = document.getElementById('warmfeedbackContainer');
+                            let warmfeedbackText = document.getElementById('warmfeedbackText');
+                            
+                            // 判断用户的选择是否全部正确
+                            let isCorrect = correctAnswers.length === correctCount;
+
+                            if (isCorrect) {
+                                warmfeedbackText.textContent = "Good job! You are correct!";
+                                warmfeedbackText.className = 'correct-feedback';
+                            } else {
+                                warmfeedbackText.textContent = `Wrong! The correct answers are ${correctAnswers.join(", ")}.`;
+                                warmfeedbackText.className = 'incorrect-feedback';
+                            }
+                            document.getElementById('warmupSubmitWords').textContent = 'continue';
+                            warmfeedbackContainer.style.display = 'block'; // 显示反馈容器
+                        })
+                        .catch(error => console.error('Error fetching answers:', error));
+                } else{
+                    let feedbackContainer = document.getElementById('feedbackContainer');
+                    let feedbackText = document.getElementById('feedbackText');
                     
-                if (currentSet == 0) {
-                    let promises1 = [];
-                    let promises2 = [];
-                    for (let set = -5; set <= -1; set++) {
-                        promises1.push(calculateAccuracy1(set));
-                        promises2.push(calculateAccuracy2(set));
-                    }
+                    feedbackText.textContent = "Your choice is submitted!";
+                    feedbackText.className = 'neutral-feedback';
 
-                    Promise.all(promises1)
-                        .then(accuracyRates => {
-                            warmupAccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
-                        })
-                        .catch(error => {
-                            // 处理错误情况
-                            console.error('Error:', error);
-                        });
-
-                    Promise.all(promises2)
-                        .then(accuracyRates => {
-                            warmupAccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
-                            document.getElementById('accuracyRate').textContent = warmupAccuracyRate2.toFixed(2) + '%';
-                            // 如果需要处理 warmupAccuracyRate2，可以在这里进行
-                        })
-                        .catch(error => {
-                            // 处理错误情况
-                            console.error('Error:', error);
-                        });
-
-                    document.getElementById('warmupSection').style.display = 'none';
-                    // document.getElementById('transitionSection2').style.display = 'block';
-                    document.getElementById('accuracyRateSection').style.display = 'block';
-                        
-                } else if (currentSet == 16) {
-
-                    let promises1 = [];
-                    let promises2 = [];
-
-                    for (let set = 1; set <= 15; set++) {
-                        promises1.push(calculateAccuracy1(set));
-                        promises2.push(calculateAccuracy2(set));
-                    }
-
-                    Promise.all(promises1)
-                        .then(accuracyRates => {
-                            AccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-
-                    Promise.all(promises2)
-                        .then(accuracyRates => {
-                            AccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-
-                    document.getElementById('mainContent').style.display = 'none';
-
-                    // Prepare selections for the first survey section
-                        // const selectionsForSection1 = prepareSelectionsForSurveySection(1);
-                        // Populate the selections in the HTML
-                    populatePreviousSelections('recall1', prepareSelectionsForSurveySection(1));
-                    populatePreviousSelections('recall2', prepareSelectionsForSurveySection(2));
-                    populatePreviousSelections('recall3', prepareSelectionsForSurveySection(3));
-                    populatePreviousSelections('recall4', prepareSelectionsForSurveySection(4));
-                    populatePreviousSelections('recall5', prepareSelectionsForSurveySection(5));
-                    populatePreviousSelections('recall6', prepareSelectionsForSurveySection(6));
-                    populatePreviousSelections('recall7', prepareSelectionsForSurveySection(7));
-                    populatePreviousSelections('recall8', prepareSelectionsForSurveySection(8));
-                    populatePreviousSelections('recall9', prepareSelectionsForSurveySection(9));
-                    populatePreviousSelections('recall10', prepareSelectionsForSurveySection(10));
-                    populatePreviousSelections('recall11', prepareSelectionsForSurveySection(11));
-                    populatePreviousSelections('recall12', prepareSelectionsForSurveySection(12));
-                    populatePreviousSelections('recall13', prepareSelectionsForSurveySection(13));
-                    populatePreviousSelections('recall14', prepareSelectionsForSurveySection(14));
-                    populatePreviousSelections('recall15', prepareSelectionsForSurveySection(15));
-                    document.getElementById('questionnaireSection1').style.display = 'block';
-                        
-                    // 保存最后的结果
-                    fetch('/save_data', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ userId: userId, level: level, warmupAccuracy: [warmupAccuracyRate1, warmupAccuracyRate2], Accuracy: [AccuracyRate1, AccuracyRate2], allSelections: allSelections })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        } else {
-                            return response.json();
-                        }
-                    })
-                    .then(data => {
-                        console.log(data);  // Can handle the response here, such as displaying a success message
-                    })
-                    .catch(error => console.error('Error:', error));
-
-                } else {
-
-                    loadWords(currentSet); // 加载新一组单词和线索
+                    document.getElementById('submitWords').textContent = 'continue';
+                    feedbackContainer.style.display = 'block'; // 显示反馈容器
                 }
+                isSubmitState = false; // 更新状态为继续状态
 
-                    // Reset the selections
-                resetWordSelections();
-            }
-            // })
-            // .catch(error => console.error('Error:', error));
-
-            if (currentSet > -6) {
-                // document.getElementById('currentSetDisplay').textContent = `Current Set: ${setNumber}`;
-                startMainTimer(); // 只有在正式实验部分才启动计时器
+                currentSet++; // 增加set_number
+                
             }
         }
 
+        function handleContinue() {
+            loadWords(currentSet); // 加载新一组单词和线索
+            resetWordSelections();
+            document.getElementById('selectedWordsList1').innerHTML = '';
+            document.getElementById('selectedWordsList2').innerHTML = '';
+            startMainTimer(); 
+
+            // 切换按钮回"Submit"并隐藏反馈容器
+            if (currentSet < 0){
+                document.getElementById('warmupSubmitWords').textContent = 'submit';
+                document.getElementById('warmfeedbackContainer').style.display = 'none';
+            }else{
+                document.getElementById('submitWords').textContent = 'submit';
+                document.getElementById('feedbackContainer').style.display = 'none';
+            }
+            isSubmitState = true; // 重置状态为提交状态
+            if (currentSet == 0) {
+                let promises1 = [];
+                let promises2 = [];
+                for (let set = -5; set <= -1; set++) {
+                    promises1.push(calculateAccuracy1(set));
+                    promises2.push(calculateAccuracy2(set));
+                }
+
+                Promise.all(promises1)
+                    .then(accuracyRates => {
+                        warmupAccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
+                    })
+                    .catch(error => {
+                        // 处理错误情况
+                        console.error('Error:', error);
+                    });
+
+                Promise.all(promises2)
+                    .then(accuracyRates => {
+                        warmupAccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
+                        document.getElementById('accuracyRate').textContent = warmupAccuracyRate2.toFixed(2) + '%';
+                        // 如果需要处理 warmupAccuracyRate2，可以在这里进行
+                    })
+                    .catch(error => {
+                        // 处理错误情况
+                        console.error('Error:', error);
+                    });
+
+                document.getElementById('warmupSection').style.display = 'none';
+                // document.getElementById('transitionSection2').style.display = 'block';
+                document.getElementById('accuracyRateSection').style.display = 'block';
+                    
+            } else if (currentSet == 16) {
+
+                let promises1 = [];
+                let promises2 = [];
+
+                for (let set = 1; set <= 15; set++) {
+                    promises1.push(calculateAccuracy1(set));
+                    promises2.push(calculateAccuracy2(set));
+                }
+
+                Promise.all(promises1)
+                    .then(accuracyRates => {
+                        AccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                Promise.all(promises2)
+                    .then(accuracyRates => {
+                        AccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                document.getElementById('mainContent').style.display = 'none';
+
+                // Prepare selections for the first survey section
+                populatePreviousSelections('recall1', prepareSelectionsForSurveySection(1));
+                populatePreviousSelections('recall2', prepareSelectionsForSurveySection(2));
+                populatePreviousSelections('recall3', prepareSelectionsForSurveySection(3));
+                populatePreviousSelections('recall4', prepareSelectionsForSurveySection(4));
+                populatePreviousSelections('recall5', prepareSelectionsForSurveySection(5));
+                populatePreviousSelections('recall6', prepareSelectionsForSurveySection(6));
+                populatePreviousSelections('recall7', prepareSelectionsForSurveySection(7));
+                populatePreviousSelections('recall8', prepareSelectionsForSurveySection(8));
+                populatePreviousSelections('recall9', prepareSelectionsForSurveySection(9));
+                populatePreviousSelections('recall10', prepareSelectionsForSurveySection(10));
+                populatePreviousSelections('recall11', prepareSelectionsForSurveySection(11));
+                populatePreviousSelections('recall12', prepareSelectionsForSurveySection(12));
+                populatePreviousSelections('recall13', prepareSelectionsForSurveySection(13));
+                populatePreviousSelections('recall14', prepareSelectionsForSurveySection(14));
+                populatePreviousSelections('recall15', prepareSelectionsForSurveySection(15));
+                document.getElementById('questionnaireSection1').style.display = 'block';
+                
+                // 保存最后的结果
+                fetch('/save_data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ userId: userId, level: level, warmupAccuracy: [warmupAccuracyRate1, warmupAccuracyRate2], Accuracy: [AccuracyRate1, AccuracyRate2], allSelections: allSelections })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    } else {
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    console.log(data);  // Can handle the response here, such as displaying a success message
+                })
+                .catch(error => console.error('Error:', error));
+
+            }
+        }
+
+
+        let isSubmitState = true; // 按钮的初始状态为提交状态
+
         // 为主实验的提交按钮添加事件监听器
-        document.getElementById('submitWords').addEventListener('click', handleSubmit);
+        document.getElementById('submitWords').addEventListener('click', function() {
+            if (isSubmitState) {
+                // 处理提交逻辑
+                handleSubmit();
+            } else {
+                // 处理继续逻辑，加载下一轮游戏
+                handleContinue();
+            }
+        });
         // 为热身实验的提交按钮添加事件监听器
-        document.getElementById('warmupSubmitWords').addEventListener('click', handleSubmit);
+        document.getElementById('warmupSubmitWords').addEventListener('click', function() {
+            if (isSubmitState) {
+                // 处理提交逻辑
+                handleSubmit();
+            } else {
+                // 处理继续逻辑，加载下一轮游戏
+                handleContinue();
+            }
+        });
 
         // 打字闪烁效果实现
-        function typeWriterEffect(text, elementId, typingSpeed) {
+        function typeWriterEffect(text, elementId, typingSpeed, onComplete) {
             let i = 0;
             function typing() {
                 if (i < text.length) {
                     document.getElementById(elementId).innerHTML += text.charAt(i);
                     i++;
                     setTimeout(typing, typingSpeed);
+                } else {
+                    if (onComplete && typeof onComplete === 'function') {
+                        onComplete(); // 打字效果完成后调用回调函数
+                    }
                 }
             }
             typing();
@@ -805,16 +987,14 @@
                     const chatBox = document.getElementById(chatBoxId);
                     chatBox.innerHTML = ''; // 清空当前的提示信息
                     const hint = aiHints[level];
-                    // if (highHint && highHint.length > 0) {
-                    //     const messageElement = document.createElement('p');
-                    //     messageElement.textContent = highHint;
-                    //     // console.log(highHint)
-                    //     chatBox.appendChild(messageElement);
-                    // }
 
                     if (hint && hint.length > 0) {
                         chatBox.innerHTML = ''; // 清空当前的提示信息以准备显示新提示
-                        typeWriterEffect(hint, chatBoxId, 20); // 使用打字效果函数显示AI提示
+                        typeWriterEffect(hint, chatBoxId, 20, function() {
+                            if (firstChoiceMade) {
+                                showSubmitButton(true);
+                            }
+                        });
                     }
                 })
                 .catch(error => console.error('Error:', error));

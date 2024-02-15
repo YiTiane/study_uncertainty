@@ -1,3 +1,40 @@
+.consent-form-page h2 {
+    text-align: center; /* 设置标题居中 */
+    font-size: xx-large;
+}
+
+.consent-form-page {
+    padding: 20px;
+    text-align: left;
+}
+
+.consent-form-content {
+    max-width: 800px;
+    margin: auto;
+}
+
+.consent-form-content h1 {
+    color: #333; /* 暗灰色 */
+    font-size: 24px; /* 标题字体大小 */
+    margin-bottom: 10px; /* 标题下方的空间 */
+}
+
+.consent-form-content p {
+    color: #666; /* 中灰色 */
+    font-size: 16px; /* 段落文本的字体大小 */
+}
+
+.consent-acknowledgment {
+    margin-top: 20px;
+    text-align: center;
+}
+
+button {
+    margin-top: 10px;
+}
+
+
+
 /* 基本页面样式 */
 body {
     font-family: 'Arial', sans-serif;
@@ -186,6 +223,50 @@ video#gameRulesVideo {
     padding: 10px;
     margin-left: 20px; /* Spacing between the speech bubble and image */
     width: 800px;
+}
+
+.title-progress-container {
+    display: flex;
+    justify-content: center;
+    position: relative; /* 确保父容器是相对定位 */
+    margin-bottom: 20px;
+}
+
+.title {
+    text-align: center;
+}
+
+.progress-text {
+    position: absolute; /* 使用绝对定位 */
+    left: 60%; /* 将进度文本放置在标题的右侧 */
+    top: 50%; /* 垂直居中 */
+    transform: translateY(-50%); /* 确保文本垂直居中 */
+    padding-left: 10px; /* 在进度文本和标题之间添加一些间距 */
+    white-space: nowrap; /* 防止进度文本换行 */
+}
+
+.submission-feedback-container {
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    justify-content: flex-start; /* 水平方向从左开始 */
+    gap: 10px; /* 在元素之间添加一些间距 */
+}
+
+.feedback-container {
+    margin-top: 0;
+    text-align: left;
+}
+
+.correct-feedback {
+    color: green;
+}
+
+.incorrect-feedback {
+    color: red;
+}
+
+.neutral-feedback {
+    color: #808080; /* 灰色 */
 }
 
 .main-content {
