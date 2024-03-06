@@ -62,7 +62,6 @@ def save_data():
     Accuracy = data.get('Accuracy')
     allSelections = data.get('allSelections')
 
-    # print(data)
     # 使用锁来同步对 user_data 的访问
     with data_lock:
         user_data_json = json.dumps(allSelections)
@@ -77,5 +76,5 @@ def save_data():
 
 
 if __name__ == '__main__':
-    app.run(threaded=True)
+    app.run()
     # app.run(debug=True)

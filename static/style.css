@@ -183,15 +183,17 @@ video#gameRulesVideo {
 .code-input-container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    margin-bottom: 10px; /* 添加一些底部边距 */
 }
-
+.code-input-container label {
+    width: 220px; /* 设置标签宽度，确保对齐 */
+    margin-right: 10px; /* 标签和输入框之间的间距 */
+}
 .code-input {
-    border: 1px solid #ddd;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 16px;
-    width: 200px;
+    flex-grow: 1; /* 输入框占据剩余空间 */
+    height: 40px; /* 设置输入框的高度 */
+    padding: 0 10px; /* 在输入框内部添加一些水平填充，使文本不紧贴边缘 */
+    font-size: 16px; /* 可选：增加字体大小，以匹配更高的输入框 */
 }
 
 .ai-accuracy-section {

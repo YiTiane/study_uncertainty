@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Codenames Game</title>
+    <title>AI-assisted Decision Making Study</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='AI_robot.png') }}" type="image/png">
 </head>
 <body>
     <div id="consentFormPage" class="consent-form-page">
@@ -29,7 +30,7 @@
             </p>
 
             <h1>4. Who can participate in the research? What is the expected duration of my participation? What is the duration of this research?</h1>
-            <p>All adults aged 21 and above with access to a computer with internet access are eligible to participate. 
+            <p>All adults aged 18 and above with access to a computer with internet access are eligible to participate. 
                 Each participant will be required to spend around 30 min. The duration of the study as a whole is Nov. 2023 - Nov. 2024.
             </p>
 
@@ -57,7 +58,7 @@
             <p>As this is a remote study that you can complete on a computer at any place of your choosing, no injury is expected.</p>
             
             <h1>10. Will there be reimbursement for participation?</h1>
-            <p>Participants completing the task and surveys will be compensated with £3.75. </p>
+            <p>You will be reimbursed for your participation, provided you complete all required parts of the study and pass the attention check questions. </p>
 
             <h1>11. What are the possible benefits to me and to others?</h1>
             <p>There is no direct benefit to you by participating in this research study. The knowledge gained may benefit the public in the future.</p>
@@ -97,8 +98,8 @@
     <div id="introSection" class="intro-section" style="display: none;">
         <h2>User Study for AI-Assisted Decision Making</h2>
         <p>Welcome to our AI-Assisted Decision Making Study!</p>
-        <p>In this study, you will play a simplified version of the popular board game "Codenames" with AI assistance. AI will give you suggestions with or without uncertainty to aid your decision making.</p>
-        <p>In this special version of "Codenames", you will play solo with the system. The system acts as the "Codemaster", providing clues comprising a word (clue) and a corresponding number of words associated with it. Your task is to select the most relevant words based on the clue, with the AI acting as a Suggester.</p>
+        <p>In this study, you will play a simplified version of the popular board game "Codenames" with AI assistance. AI will give you suggestions to aid your decision making.</p>
+        <p>In this special version of "Codenames", you will play solo with the system. The system acts as the "Codemaster", providing clues including a word (clue) and a corresponding number of words associated with it. Your task is to select the most relevant words based on the clue, with the AI acting as a Suggester.</p>
         <p>Note 1: Do not refresh the page while the study is in progress!</p>
         <p>Note 2: For each decision, you must think for at least 10 seconds before clicking the submit button.</p>
         <div class="image-container">
@@ -172,15 +173,20 @@
     <!-- 过渡页面 1 -->
     <div id="transitionSection1" class="transition-section" style="display: none;">
         <h2>Get Ready for Warm-Up</h2>
-        <p>Great job on completing the quiz! You're now ready to proceed to the warm-up round. Use this round to familiarize yourself with the game and AI's capability. Enter your prolific ID to get a code to proceed. </p>
+        <p>Great job on completing the quiz! You're now ready to proceed to the warm-up round. Use this round to familiarize yourself with the game and AI's capability. Enter your Connect ID and the code we have provided to proceed. </p>
         
         <div class="code-input-container">
+            <label for="idInput">Enter Your Connect ID:</label>
             <input type="text" id="idInput" class="code-input" placeholder="Enter Your ID">
-            <button id="generateCode" class="btn">Generate Code</button>
         </div>
-        <p id="codeDisplay"></p>
         <div class="code-input-container">
+            <label for="codeInput">Enter Code:</label>
             <input type="text" id="codeInput" class="code-input" placeholder="Enter Code">
+        </div>
+        <p style="font-size: 12px; text-align: center; margin-top: 10px; margin-bottom: 20px;">
+            If you do not know the code, please check the Cloud Research page where you entered this study. You will find it in the description.
+        </p>
+        <div class="code-input-container">
             <button id="startWarmup" class="btn">Proceed to Warm-Up</button>
         </div>
     </div>
@@ -497,71 +503,123 @@
         
         var userId;
 
-        document.getElementById('generateCode').addEventListener('click', function() {
-            userId = document.getElementById('idInput').value;
-            var codeDisplay = document.getElementById('codeDisplay');
+        // document.getElementById('generateCode').addEventListener('click', function() {
+        //     userId = document.getElementById('idInput').value;
+        //     var codeDisplay = document.getElementById('codeDisplay');
 
-            if (userId.trim() === '') {
-                idInput.style.borderColor = 'red'; // Change border color to red
-            } else {
-                // 如果输入不为空，则生成代码
-                var generatedCode = generateCode();
-                codeDisplay.style.color = 'black'; // 重置文本颜色
-                codeDisplay.innerText = "Your Code is: " + generatedCode;
-            }
-        });
+        //     if (userId.trim() === '') {
+        //         idInput.style.borderColor = 'red'; // Change border color to red
+        //     } else {
+        //         // 如果输入不为空，则生成代码
+        //         var generatedCode = generateCode();
+        //         codeDisplay.style.color = 'black'; // 重置文本颜色
+        //         codeDisplay.innerText = "Your Code is: " + generatedCode;
+        //     }
+        // });
 
-        function generateCode() {
-            var codes = ['v7jw9', 'okd82', 'ps1fj', 'ds8hd', 'o39dp', 'duxn3'];
-            var currentTime = new Date().getTime(); // 获取当前时间的毫秒数
-            var randomFactor = Math.random() * currentTime; // 将时间与随机数结合
+        // function generateCode() {
+        //     var codes = ['v7jw9', 'okd82', 'ps1fj', 'ds8hd', 'o39dp', 'duxn3'];
+        //     var currentTime = new Date().getTime(); // 获取当前时间的毫秒数
+        //     var randomFactor = Math.random() * currentTime; // 将时间与随机数结合
 
-            var randomIndex = Math.floor(randomFactor % codes.length); // 使用取模确保索引在数组范围内
-            var selectedCode = codes[randomIndex];
-            return selectedCode;
-        }
+        //     var randomIndex = Math.floor(randomFactor % codes.length); // 使用取模确保索引在数组范围内
+        //     var selectedCode = codes[randomIndex];
+        //     return selectedCode;
+        // }
 
         let level; // This will hold the level based on the code
         let accuracy;
 
+        // document.getElementById('startWarmup').addEventListener('click', function() {
+        //     var codeInput = document.getElementById('codeInput');
+        //     var code = codeInput.value;
+        //     var validCodes = ['v7jw9', 'okd82', 'ps1fj', 'ds8hd', 'o39dp', 'duxn3'];
+
+        //     if (validCodes.includes(code)) {
+        //         // Code is valid, proceed with setting the global variable and moving to the next section
+        //         // Example: setting the global variable 'level'
+        //         if (code === 'v7jw9'){
+        //             level = 'Low';
+        //             accuracy = 'high';
+        //         } else if (code === 'okd82'){
+        //             level = 'Medium';
+        //             accuracy = 'high';
+        //         } else if (code === 'ps1fj'){
+        //             level = 'High';
+        //             accuracy = 'high';
+        //         } else if (code === 'ds8hd'){
+        //             level = 'Low2';
+        //             accuracy = 'low';
+        //         } else if (code === 'o39dp'){
+        //             level = 'Medium2';
+        //             accuracy = 'low';
+        //         } else if (code === 'duxn3'){
+        //             level = 'High2';
+        //             accuracy = 'low';                
+        //         }
+        //         // Proceed to the next page if code is valid
+        //         // Replace 'nextPage' with the actual ID of the next section or page you want to show
+        //         document.getElementById('accuracyPercentage').innerText = accuracy;
+        //         document.getElementById('aiAccuracySection').style.display = 'block';
+        //         document.getElementById('transitionSection1').style.display = 'none';
+        //         loadWords(currentSet); // 加载第一组热身单词和线索
+
+        //     } else {
+        //         codeInput.placeholder = 'Invalid Code'; // Change placeholder to show error
+        //         codeInput.style.borderColor = 'red'; // Change border color to red
+        //         codeInput.value = ''; // Clear the input field
+        //     }
+        // });
+
         document.getElementById('startWarmup').addEventListener('click', function() {
-            var codeInput = document.getElementById('codeInput');
-            var code = codeInput.value;
-            var validCodes = ['v7jw9', 'okd82', 'ps1fj', 'ds8hd', 'o39dp', 'duxn3'];
+            userId = document.getElementById('idInput').value; // 获取用户ID
+            var code = document.getElementById('codeInput').value;
 
-            if (validCodes.includes(code)) {
-                // Code is valid, proceed with setting the global variable and moving to the next section
-                // Example: setting the global variable 'level'
-                if (code === 'v7jw9'){
-                    level = 'Low';
-                    accuracy = 'high';
-                } else if (code === 'okd82'){
-                    level = 'Medium';
-                    accuracy = 'high';
-                } else if (code === 'ps1fj'){
-                    level = 'High';
-                    accuracy = 'high';
-                } else if (code === 'ds8hd'){
-                    level = 'Low2';
-                    accuracy = 'low';
-                } else if (code === 'o39dp'){
-                    level = 'Medium2';
-                    accuracy = 'low';
-                } else if (code === 'duxn3'){
-                    level = 'High2';
-                    accuracy = 'low';                
-                }
-                // Proceed to the next page if code is valid
-                // Replace 'nextPage' with the actual ID of the next section or page you want to show
-                document.getElementById('accuracyPercentage').innerText = accuracy;
-                document.getElementById('aiAccuracySection').style.display = 'block';
-                document.getElementById('transitionSection1').style.display = 'none';
-                loadWords(currentSet); // 加载第一组热身单词和线索
-
+            // 检查用户是否输入了ID和code，以及code是否匹配
+            if (userId.trim() === '') {
+                document.getElementById('idInput').style.borderColor = 'red'; // 如果ID为空，边框变红
             } else {
-                codeInput.placeholder = 'Invalid Code'; // Change placeholder to show error
-                codeInput.style.borderColor = 'red'; // Change border color to red
-                codeInput.value = ''; // Clear the input field
+                // 如果ID和code都有效，继续实验逻辑
+                var validCodes = ['v7jw9', 'okd82', 'ps1fj', 'ds8hd', 'o39dp', 'duxn3'];
+
+                if (validCodes.includes(code)) {
+                    // 根据code设置level和accuracy
+                    switch (code) {
+                        case 'v7jw9':
+                            level = 'Low';
+                            accuracy = 'high';
+                            break;
+                        case 'okd82':
+                            level = 'Medium';
+                            accuracy = 'high';
+                            break;
+                        case 'ps1fj':
+                            level = 'High';
+                            accuracy = 'high';
+                            break;
+                        case 'ds8hd':
+                            level = 'Low2';
+                            accuracy = 'low';
+                            break;
+                        case 'o39dp':
+                            level = 'Medium2';
+                            accuracy = 'low';
+                            break;
+                        case 'duxn3':
+                            level = 'High2';
+                            accuracy = 'low';                
+                            break;
+                    }
+                    // 更新界面并继续实验
+                    document.getElementById('accuracyPercentage').innerText = accuracy;
+                    document.getElementById('aiAccuracySection').style.display = 'block';
+                    document.getElementById('transitionSection1').style.display = 'none';
+                    loadWords(currentSet); // 加载第一组热身单词和线索
+                } else {
+                    document.getElementById('codeInput').placeholder = 'Invalid Code'; // 提示无效的code
+                    document.getElementById('codeInput').style.borderColor = 'red'; // 边框变红
+                    document.getElementById('codeInput').value = ''; // 清空输入框
+                }
             }
         });
 
@@ -630,7 +688,7 @@
             mainInterval = setInterval(() => {
                 mainSeconds++;
                 document.getElementById('mainTime').textContent = formatTime(mainSeconds);
-                // 当计时器达到或超过10秒时，显示submit按钮
+                // 当计时器达到或超过10秒时，显示submit按钮 timer
                 if (!firstChoiceMade && mainSeconds >= 10) {
                     showSubmitButton(true);
                 }
@@ -837,14 +895,14 @@
             }
             isSubmitState = true; // 重置状态为提交状态
             if (currentSet == 0) {
-                let promises1 = [];
-                let promises2 = [];
+                let wpromises1 = [];
+                let wpromises2 = [];
                 for (let set = -5; set <= -1; set++) {
-                    promises1.push(calculateAccuracy1(set));
-                    promises2.push(calculateAccuracy2(set));
+                    wpromises1.push(calculateAccuracy1(set));
+                    wpromises2.push(calculateAccuracy2(set));
                 }
 
-                Promise.all(promises1)
+                Promise.all(wpromises1)
                     .then(accuracyRates => {
                         warmupAccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
                     })
@@ -853,7 +911,7 @@
                         console.error('Error:', error);
                     });
 
-                Promise.all(promises2)
+                Promise.all(wpromises2)
                     .then(accuracyRates => {
                         warmupAccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
                         document.getElementById('accuracyRate').textContent = warmupAccuracyRate2.toFixed(2) + '%';
@@ -878,20 +936,49 @@
                     promises2.push(calculateAccuracy2(set));
                 }
 
+                // Promise.all(promises1)
+                //     .then(accuracyRates => {
+                //         AccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
+                //     })
+                //     .catch(error => {
+                //         console.error('Error:', error);
+                //     });
+
+                // Promise.all(promises2)
+                //     .then(accuracyRates => {
+                //         AccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
+                //     })
+                //     .catch(error => {
+                //         console.error('Error:', error);
+                //     });
                 Promise.all(promises1)
                     .then(accuracyRates => {
                         AccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
+                        return Promise.all(promises2); // 确保第一组promises完成后再执行第二组
                     })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-
-                Promise.all(promises2)
                     .then(accuracyRates => {
                         AccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
+                        // 现在可以安全地发送数据到服务器
+                        return fetch('/save_data', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ userId: userId, level: level, warmupAccuracy: [warmupAccuracyRate1, warmupAccuracyRate2], Accuracy: [AccuracyRate1, AccuracyRate2], allSelections: allSelections })
+                        });
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        } else {
+                            return response.json();
+                        }
+                    })
+                    .then(data => {
+                        console.log(data);  // 成功处理响应
                     })
                     .catch(error => {
-                        console.error('Error:', error);
+                        console.error('Error:', error);  // 处理任何在链中发生的错误
                     });
 
                 document.getElementById('mainContent').style.display = 'none';
@@ -915,24 +1002,24 @@
                 document.getElementById('questionnaireSection1').style.display = 'block';
                 
                 // 保存最后的结果
-                fetch('/save_data', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ userId: userId, level: level, warmupAccuracy: [warmupAccuracyRate1, warmupAccuracyRate2], Accuracy: [AccuracyRate1, AccuracyRate2], allSelections: allSelections })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    } else {
-                        return response.json();
-                    }
-                })
-                .then(data => {
-                    console.log(data);  // Can handle the response here, such as displaying a success message
-                })
-                .catch(error => console.error('Error:', error));
+                // fetch('/save_data', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify({ userId: userId, level: level, warmupAccuracy: [warmupAccuracyRate1, warmupAccuracyRate2], Accuracy: [AccuracyRate1, AccuracyRate2], allSelections: allSelections })
+                // })
+                // .then(response => {
+                //     if (!response.ok) {
+                //         throw new Error(`HTTP error! status: ${response.status}`);
+                //     } else {
+                //         return response.json();
+                //     }
+                // })
+                // .then(data => {
+                //     console.log(data);  // Can handle the response here, such as displaying a success message
+                // })
+                // .catch(error => console.error('Error:', error));
 
             }
         }
