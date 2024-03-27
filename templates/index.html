@@ -288,7 +288,7 @@
             <div class='title'>
                 <h1>Official Round</h1>
             </div>
-            <span id="mainProgressText" class="progress-text">Progress: 1/15</span>
+            <span id="mainProgressText" class="progress-text">Progress: 1/10</span>
         </div>
 
         <div id="timerContainer" class="timer-container">
@@ -378,30 +378,9 @@
                     <p id="recall10">Set10:</p>
                     <span class="info-icon" onclick="showPopup(10)">🛈</span>
                 </div>
-                <div class="set-info-container">
-                    <p id="recall11">Set11:</p>
-                    <span class="info-icon" onclick="showPopup(11)">🛈</span>
-                </div>
-                <div class="set-info-container">
-                    <p id="recall12">Set12:</p>
-                    <span class="info-icon" onclick="showPopup(12)">🛈</span>
-                </div>
-                <div class="set-info-container">
-                    <p id="recall13">Set13:</p>
-                    <span class="info-icon" onclick="showPopup(13)">🛈</span>
-                </div>
-                <div class="set-info-container">
-                    <p id="recall14">Set14:</p>
-                    <span class="info-icon" onclick="showPopup(14)">🛈</span>
-                </div>
-                <div class="set-info-container">
-                    <p id="recall15">Set15:</p>
-                    <span class="info-icon" onclick="showPopup(15)">🛈</span>
-                </div>
             </div>
         </div>
         <iframe id="qualtrics-survey1" src="https://nus.syd1.qualtrics.com/jfe/form/SV_eya68MSrw88PHSK"></iframe>
-        <!-- <button id="continueExperiment" class="btn">Continue</button> -->
 
     </div>
     
@@ -502,74 +481,8 @@
         });
         
         var userId;
-
-        // document.getElementById('generateCode').addEventListener('click', function() {
-        //     userId = document.getElementById('idInput').value;
-        //     var codeDisplay = document.getElementById('codeDisplay');
-
-        //     if (userId.trim() === '') {
-        //         idInput.style.borderColor = 'red'; // Change border color to red
-        //     } else {
-        //         // 如果输入不为空，则生成代码
-        //         var generatedCode = generateCode();
-        //         codeDisplay.style.color = 'black'; // 重置文本颜色
-        //         codeDisplay.innerText = "Your Code is: " + generatedCode;
-        //     }
-        // });
-
-        // function generateCode() {
-        //     var codes = ['v7jw9', 'okd82', 'ps1fj', 'ds8hd', 'o39dp', 'duxn3'];
-        //     var currentTime = new Date().getTime(); // 获取当前时间的毫秒数
-        //     var randomFactor = Math.random() * currentTime; // 将时间与随机数结合
-
-        //     var randomIndex = Math.floor(randomFactor % codes.length); // 使用取模确保索引在数组范围内
-        //     var selectedCode = codes[randomIndex];
-        //     return selectedCode;
-        // }
-
         let level; // This will hold the level based on the code
         let accuracy;
-
-        // document.getElementById('startWarmup').addEventListener('click', function() {
-        //     var codeInput = document.getElementById('codeInput');
-        //     var code = codeInput.value;
-        //     var validCodes = ['v7jw9', 'okd82', 'ps1fj', 'ds8hd', 'o39dp', 'duxn3'];
-
-        //     if (validCodes.includes(code)) {
-        //         // Code is valid, proceed with setting the global variable and moving to the next section
-        //         // Example: setting the global variable 'level'
-        //         if (code === 'v7jw9'){
-        //             level = 'Low';
-        //             accuracy = 'high';
-        //         } else if (code === 'okd82'){
-        //             level = 'Medium';
-        //             accuracy = 'high';
-        //         } else if (code === 'ps1fj'){
-        //             level = 'High';
-        //             accuracy = 'high';
-        //         } else if (code === 'ds8hd'){
-        //             level = 'Low2';
-        //             accuracy = 'low';
-        //         } else if (code === 'o39dp'){
-        //             level = 'Medium2';
-        //             accuracy = 'low';
-        //         } else if (code === 'duxn3'){
-        //             level = 'High2';
-        //             accuracy = 'low';                
-        //         }
-        //         // Proceed to the next page if code is valid
-        //         // Replace 'nextPage' with the actual ID of the next section or page you want to show
-        //         document.getElementById('accuracyPercentage').innerText = accuracy;
-        //         document.getElementById('aiAccuracySection').style.display = 'block';
-        //         document.getElementById('transitionSection1').style.display = 'none';
-        //         loadWords(currentSet); // 加载第一组热身单词和线索
-
-        //     } else {
-        //         codeInput.placeholder = 'Invalid Code'; // Change placeholder to show error
-        //         codeInput.style.borderColor = 'red'; // Change border color to red
-        //         codeInput.value = ''; // Clear the input field
-        //     }
-        // });
 
         document.getElementById('startWarmup').addEventListener('click', function() {
             userId = document.getElementById('idInput').value; // 获取用户ID
@@ -729,7 +642,7 @@
                 let warmupProgress = Math.abs(currentSet + 6); // 由于currentSet从-5开始
                 document.getElementById('warmupProgressText').textContent = `Progress: ${warmupProgress}/5`;
             } else if (currentSet >= 1) {
-                document.getElementById('mainProgressText').textContent = `Progress: ${currentSet}/15`;
+                document.getElementById('mainProgressText').textContent = `Progress: ${currentSet}/10`;
             }
 
             startMainTimer(); // 只有在正式实验部分才启动计时器
@@ -926,31 +839,16 @@
                 // document.getElementById('transitionSection2').style.display = 'block';
                 document.getElementById('accuracyRateSection').style.display = 'block';
                     
-            } else if (currentSet == 16) {
+            } else if (currentSet == 11) {
 
                 let promises1 = [];
                 let promises2 = [];
 
-                for (let set = 1; set <= 15; set++) {
+                for (let set = 1; set <= 10; set++) {
                     promises1.push(calculateAccuracy1(set));
                     promises2.push(calculateAccuracy2(set));
                 }
 
-                // Promise.all(promises1)
-                //     .then(accuracyRates => {
-                //         AccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
-                //     })
-                //     .catch(error => {
-                //         console.error('Error:', error);
-                //     });
-
-                // Promise.all(promises2)
-                //     .then(accuracyRates => {
-                //         AccuracyRate2 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
-                //     })
-                //     .catch(error => {
-                //         console.error('Error:', error);
-                //     });
                 Promise.all(promises1)
                     .then(accuracyRates => {
                         AccuracyRate1 = accuracyRates.reduce((acc, rate) => acc + rate, 0) / accuracyRates.length;
@@ -994,32 +892,7 @@
                 populatePreviousSelections('recall8', prepareSelectionsForSurveySection(8));
                 populatePreviousSelections('recall9', prepareSelectionsForSurveySection(9));
                 populatePreviousSelections('recall10', prepareSelectionsForSurveySection(10));
-                populatePreviousSelections('recall11', prepareSelectionsForSurveySection(11));
-                populatePreviousSelections('recall12', prepareSelectionsForSurveySection(12));
-                populatePreviousSelections('recall13', prepareSelectionsForSurveySection(13));
-                populatePreviousSelections('recall14', prepareSelectionsForSurveySection(14));
-                populatePreviousSelections('recall15', prepareSelectionsForSurveySection(15));
                 document.getElementById('questionnaireSection1').style.display = 'block';
-                
-                // 保存最后的结果
-                // fetch('/save_data', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     body: JSON.stringify({ userId: userId, level: level, warmupAccuracy: [warmupAccuracyRate1, warmupAccuracyRate2], Accuracy: [AccuracyRate1, AccuracyRate2], allSelections: allSelections })
-                // })
-                // .then(response => {
-                //     if (!response.ok) {
-                //         throw new Error(`HTTP error! status: ${response.status}`);
-                //     } else {
-                //         return response.json();
-                //     }
-                // })
-                // .then(data => {
-                //     console.log(data);  // Can handle the response here, such as displaying a success message
-                // })
-                // .catch(error => console.error('Error:', error));
 
             }
         }
@@ -1088,9 +961,6 @@
         }
 
         function prepareSelectionsForSurveySection(sectionNumber) {
-            // let startIndex = sectionNumber * 5;
-            // let endIndex = sectionNumber * 5 + 15;
-            // return allSelections.slice(startIndex, endIndex);
             let index = sectionNumber + 4;
             return allSelections[index]
         }
